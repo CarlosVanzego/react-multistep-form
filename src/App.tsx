@@ -1,21 +1,23 @@
-import { FormEvent, useState } from "react"
-import { AccountForm } from "./AcccountForm"
-import { AddressForm } from "./AddressForm"
-import { useMultistepForm } from "./useMultistepForm"
-import { UserForm } from "./UserForm"
+import { FormEvent, useState } from "react"; // Importing necessary modules
+import { AccountForm } from "./AcccountForm"; // Importing AccountForm component
+import { AddressForm } from "./AddressForm"; // Importing AddressForm component
+import { useMultistepForm } from "./useMultistepForm"; // Importing custom hook useMultistepForm
+import { UserForm } from "./UserForm"; // Importing UserForm component
 
+// Define type for form data
 type FormData = {
-  firstName: string
-  lastName: string
-  age: string
-  street: string
-  city: string
-  state: string
-  zip: string
-  email: string
-  password: string
+  firstName: string;
+  lastName: string;
+  age: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  email: string;
+  password: string;
 }
 
+// Initial form data
 const INITIAL_DATA: FormData = {
   firstName: "",
   lastName: "",
@@ -28,27 +30,33 @@ const INITIAL_DATA: FormData = {
   password: "",
 }
 
+// App component definition
 function App() {
-  const [data, setData] = useState(INITIAL_DATA)
+  const [data, setData] = useState(INITIAL_DATA); // State to manage form data
+
+  // Function to update form fields
   function updateFields(fields: Partial<FormData>) {
     setData(prev => {
-      return { ...prev, ...fields }
-    })
+      return { ...prev, ...fields };
+    });
   }
+
+  // Destructure values from custom hook useMultistepForm
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } = 
-  useMultistepForm([
-    <UserForm {...data} updateFields={updateFields} />,
-    <AddressForm {...data} updateFields={updateFields} />,
-    <AccountForm {...data} updateFields={updateFields} />,
-  ])
+    useMultistepForm([
+      <UserForm {...data} updateFields={updateFields} />,
+      <AddressForm {...data} updateFields={updateFields} />,
+      <AccountForm {...data} updateFields={updateFields} />,
+    ]);
 
+  // Function to handle form submission
   function onSubmit(e: FormEvent) {
-    e.preventDefault()
-    if (!isLastStep) return next()
-    alert("Successful Account Creation")
+    e.preventDefault();
+    if (!isLastStep) return next(); // Move to next step if not the last step
+    alert("Successful Account Creation"); // Display alert for successful account creation
   }
 
-
+  // Render the App component
   return (
     <div 
       style={{
@@ -63,10 +71,11 @@ function App() {
       }}
     >
       <form onSubmit={onSubmit}>
+        {/* Display current step and step count */}
         <div style={{ position: "absolute", top: ".5rem", right: ".5rem"}}>
           {currentStepIndex + 1} / {steps.length}
         </div>
-        {step}
+        {step} {/* Render current step */}
         <div 
           style={{ 
             marginTop: "1rem", 
@@ -75,17 +84,18 @@ function App() {
             justifyContent: "flex-end"
           }}
         >
+          {/* Back button */}
           {!isFirstStep && (
-          <button type="button" onClick={back}>
-            Back
+            <button type="button" onClick={back}>
+              Back
             </button>
-            )}
-          <button type="submit">{isLastStep ? "Finish" : "Next"}
-            </button>
+          )}
+          {/* Next/Finish button */}
+          <button type="submit">{isLastStep ? "Finish" : "Next"}</button>
         </div>
       </form>
-  </div>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App; // Export App component as default

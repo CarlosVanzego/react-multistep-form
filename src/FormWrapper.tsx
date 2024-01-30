@@ -1,10 +1,11 @@
-import { ReactNode } from "react"
+import { ReactNode } from "react" // Importing ReactNode type
 
+// Define props type for FormWrapper component
 type FormWrapperProps = {
-  title: string
-  children: ReactNode
+  title: string; // Title of the form
+  children: ReactNode; // Child components
 }
-
+// FormWrapper component definition
 export function FormWrapper({ title, children }: 
   FormWrapperProps) {
     return (
